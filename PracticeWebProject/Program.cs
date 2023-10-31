@@ -1,3 +1,5 @@
+using PracticeWebProject.Services;
+
 namespace PracticeWebProject
 {
     public class Program
@@ -8,6 +10,7 @@ namespace PracticeWebProject
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddTransient<JsonFileProductService>();
 
             var app = builder.Build();
 
