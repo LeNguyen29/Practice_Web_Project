@@ -1,4 +1,6 @@
+using PracticeWebProject.Models;
 using PracticeWebProject.Services;
+using System.Text.Json;
 
 namespace PracticeWebProject
 {
@@ -30,6 +32,15 @@ namespace PracticeWebProject
             app.UseAuthorization();
 
             app.MapRazorPages();
+
+            // API
+            app.MapGet("/Products", (context) =>
+            {
+                var products = app.Services.GetService<JsonFileProductService>().GetProducts();
+                var json = JsonSerializer.Serialize(products);
+
+                return context.Response.WriteAsync(json);
+            });
 
             app.Run();
         }
