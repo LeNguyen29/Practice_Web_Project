@@ -12,6 +12,7 @@ namespace PracticeWebProject
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddControllers();
             builder.Services.AddTransient<JsonFileProductService>();
 
             var app = builder.Build();
@@ -34,6 +35,8 @@ namespace PracticeWebProject
             app.MapRazorPages();
 
             // API
+            app.MapControllers();
+            /*
             app.MapGet("/Products", (context) =>
             {
                 var products = app.Services.GetService<JsonFileProductService>().GetProducts();
@@ -41,6 +44,7 @@ namespace PracticeWebProject
 
                 return context.Response.WriteAsync(json);
             });
+            */
 
             app.Run();
         }
