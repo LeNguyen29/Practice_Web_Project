@@ -21,5 +21,18 @@ namespace PracticeWebProject.Controllers
         {
             return ProductService.GetProducts();
         }
+
+        // [HttpPatch] update a tiny bit (get from body)
+        [Route("Rate")]
+        [HttpGet]
+        public ActionResult Get(
+            [FromQuery] string productId,
+            [FromQuery] int rating
+            )
+        {
+            ProductService.AddRating(productId, rating);
+
+            return Ok();
+        }
     }
 }
