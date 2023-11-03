@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using PracticeWebProject.Models
+@using PracticeWebProject.Services
+@inject JsonFileProductService ProductService
+
+<div class="card-columns">
+    @foreach (var product in ProductService.GetProducts())
+    {
+        <div class="card">
+            <div class="card-img" style="background-image: url('@product.Image')"></div>
+            <div class="card-body">
+                <h5 class="card-title">@product.Title</h5>
+            </div>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">
+                <button @onclick="(e => SelectProduct(product.ID))" data-toggle="modal" data-target="#productModal"
+                    class="btn btn-info">
+                    More Info
+                </button>
+            </small>
+        </div>
+    }
+</div>
+
+@code {
+    Product selectProduct;
+    string selectProductID;
+
+    void SelectProduct(string productID)
+    {
+        selectProductID = productID;
+        selectProduct = ProductService.GetProducts().First(x => x.ID == productID);
+    }
+}
