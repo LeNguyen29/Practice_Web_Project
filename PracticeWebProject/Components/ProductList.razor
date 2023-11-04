@@ -14,22 +14,74 @@
         </div>
         <div class="card-footer">
             <small class="text-muted">
-                <button @onclick="(e => SelectProduct(product.ID))" data-toggle="modal" data-target="#productModal"
+                <button @onclick="(e => SelectProduct(product.ID))" data-bs-toggle="modal" data-bs-target="#productModal"
                     class="btn btn-info">
                     More Info
+                </button>
+
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
                 </button>
             </small>
         </div>
     }
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (selectedProduct != null)
+{
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productTitle">@selectedProduct.Title</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-img" style="background-image: url('@selectedProduct.Image');">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@selectedProduct.Description</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 @code {
-    Product selectProduct;
+    Product selectedProduct;
     string selectProductID;
 
     void SelectProduct(string productID)
     {
         selectProductID = productID;
-        selectProduct = ProductService.GetProducts().First(x => x.ID == productID);
+        selectedProduct = ProductService.GetProducts().First(x => x.ID == productID);
     }
 }
