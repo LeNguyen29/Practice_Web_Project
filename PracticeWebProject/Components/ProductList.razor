@@ -67,13 +67,35 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    
+                    @if (voteCount == 0)
+                    {
+                        <span>First to vote!</span>
+                    }
+                    else
+                    {
+                        <span>@voteCount @voteLabel</span>
+                    }
+
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        var currentStar = i;
+                        if (i <= currentRating)
+                        {
+                            <span class="fa-star fa-star checked" @onclick="(e => SubmitRating(currentStar))"></span>
+                        }
+                        else
+                        {
+                            <span class="fa-star fa-star" @onclick="(e => SubmitRating(currentStar))"></span>
+
+                        }
+                    }
                 </div>
             </div>
         </div>
     </div>
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @code {
     Product selectedProduct;
@@ -83,5 +105,36 @@
     {
         selectProductID = productID;
         selectedProduct = ProductService.GetProducts().First(x => x.ID == productID);
+        GetCurrentRating();
+    }
+
+    int currentRating = 0;
+    int voteCount = 0;
+    string voteLabel;
+
+    void GetCurrentRating()
+    {
+        if (selectedProduct.Ratings == null)
+        {
+            currentRating = 0;
+            voteCount = 0;
+        }
+        else
+        {
+            voteCount = selectedProduct.Ratings.Count();
+            voteLabel = voteCount > 1 ? "Votes" : "Vote";
+            currentRating = selectedProduct.Ratings.Sum() / voteCount;
+        }
+
+        Console.WriteLine($"Current rating for {selectedProduct.ID}: {currentRating}");
+    }
+
+    void SubmitRating(int rating)
+    {
+        Console.WriteLine($"Received rating for {selectProductID}: {rating}");
+
+        ProductService.AddRating(selectProductID, rating);
+
+        SelectProduct(selectProductID);
     }
 }
